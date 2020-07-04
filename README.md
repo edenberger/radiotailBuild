@@ -23,7 +23,7 @@ installDeps.sh and build.sh was built for Ubuntu 20.04.
 Easiest way:
 1. Download the release -
 ```console
-$ wget 
+$ wget https://github.com/edenberger/radiotailBuild/releases/download/beta-0.1/radiotail-0.1.tar.gz
 ```
 2. Unpack -
 ```console

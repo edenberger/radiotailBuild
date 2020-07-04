@@ -1,0 +1,19 @@
+#!/usr/bin/bash
+TITLE="grGSM Decode"
+
+DEMO=gsm
+FREQ=100000000
+RATE=1000000
+GAIN=30
+
+OPTIONS="FREQ RATE GAIN"
+
+function run {
+  DESCRAMBLER=cat
+  (test -n $DESCRAM && test -f ./descramblers/$DESCRAM) && DESCRAMBLER="./descramblers/$DESCRAM $PRESET"
+  demodulators/${DEMO} | $DESCRAMBLER | grgsm_decode -e 3 --fc=$RT_FREQ --samp-rate=$RT_RATE -c /dev/stdin || (tput setaf 1 ; echo Failed ; tput sgr0)
+}
+
+#grgsm_decode --kc=KC --fc=$1 --gain=$GAIN --samp-rate=$SAME_RATE -c ./gsm.capture
+
+

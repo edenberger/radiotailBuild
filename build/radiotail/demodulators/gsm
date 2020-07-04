@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+grgsm_capture --fc=$RT_FREQ --gain=$RT_GAIN --samp-rate=$RT_RATE -c /dev/stdout

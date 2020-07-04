@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+TITLE="Dump978 - demodulator/decoder for UAT"
+
+DEMO=sdr
+FREQ=978000000
+RATE=2083334
+GAIN=48
+REC=off
+DESCRAM=off
+
+OPTIONS="FREQ RATE GAIN REC"
+
+function run {
+  COMMAND="demodulators/${RT_DEMO} | "
+  test -f ./descramblers/${RT_DESCRAM} && COMMAND="${COMMAND} ./descramblers/${RT_DESCRAM} $PRESET | "
+  (test ! -z $RT_REC && test $RT_REC == "on") && COMMAND="${COMMAND} tee rec/$(echo $TITLE|cut -d" " -f1|tr 'A-Z' 'a-z')-$(date +%F-%H-%M-%S).${RT_DEMO} | "
+  COMMAND="${COMMAND} ./bin/dump978 | ./bin/uat2text || (tput setaf 1 ; echo Failed ; tput sgr0)"
+  tput setaf 4 ; echo "Running command:"
+  echo $COMMAND ; tput sgr0
+  eval $COMMAND
+}

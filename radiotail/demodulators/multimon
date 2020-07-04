@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+rtl_fm -g $RT_GAIN -p 0 -f $RT_FREQ -s $RT_RATE -E dc - | multimon-ng -t raw /dev/stdin

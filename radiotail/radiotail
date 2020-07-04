@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+  # Source the main source file
+bash --rcfile ./.source #-x

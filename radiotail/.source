@@ -1,0 +1,130 @@
+#!/usr/bin/bash
+
+function banner
+#Description: Print banner
+{
+  sleep 0.03
+  clear
+  tput setaf 145
+  cat ./art/topBanner | while read line; do echo "${line}" ; sleep 0.1 ; done
+  tput sgr0
+  echo
+  echo
+  tput bold
+  echo "       $(printf $(ls decoders|wc -l))`tput setaf 124` Decoders `tput sgr0`"
+  tput bold
+  echo "       $(printf $(ls demodulators|wc -l))`tput setaf 5`  Demodulators `tput sgr0`"
+  tput bold
+  echo "       $(printf $(ls descramblers|wc -l))`tput setaf 4`  Descramblers `tput sgr0`"
+  echo
+  echo
+  cat ./art/buttomBanner
+}
+
+function search
+#Description: Search supported modules
+{
+    # Tree all de*rs directories and grep an argument if supplied
+  tree -C -f de*rs | grep ${1}'?*'
+}
+
+function show
+#Description: Show module options (same as options)
+{
+  echo
+  echo $TITLE
+  echo
+  echo Options:
+  echo
+  echo "Name	  Settings	  Defaults"
+  echo "----	  --------	  --------"
+  echo
+  for option in $OPTIONS;do
+    echo -e "$option = \t$(temp=RT_$(echo $option) ; echo "${!temp}") \t \t(${!option})"|column
+  done
+  echo
+  echo
+  echo Demodulation:
+  echo "Name   Settings  Defaults"
+  echo "----   --------	 --------"
+  echo
+  echo -e "DEMO = \t$RT_DEMO \t(${DEMO})"|column
+  test "$RT_DEMO" = "file" && echo FILE = $RT_FILE |column
+  echo
+  echo
+  echo Descramblers:
+  echo "Name   Settings  Descrams"
+  echo "----   --------	 --------"
+  echo
+  echo -e "DESCRAM = ${RT_DESCRAM}\t[$(echo -n $(ls -m descramblers/))]"
+  echo
+  echo
+}
+
+alias options=show
+
+function set
+#Description: Set a value to variable
+{
+    # Ignore : and = when setting variables
+  var=RT_$(echo $@ |sed -e 's/:/ /;s/=/ /'|tr -s " "|cut -d" " -f1)
+  val=$(echo $@ |sed -e 's/:/ /;s/=/ /'|tr -s " "|cut -d" " -f2)
+  export ${var}=${val}
+}
+
+function help
+#Description: Print this help message
+{
+  echo
+  echo Commands:
+  echo ---------
+    # Parse this file and extract functions with their description
+  grep ^function -A1 --no-group-separator .source |cut -d" " -f2-|paste - -|column -s $'\t' -t
+  echo
+}
+
+function use
+#Description: Use a module
+{
+  if [[ ! -f $1 ]] ;then echo "No such module: $1" ; return ; fi
+  source $1
+  PS1="\[$(tput setaf 145)\]radiotail:\[$(tput sgr0)\] \[$(tput setaf 34)\]${1}>\[$(tput sgr0)\] "
+#  PS1="radiotail ${1}> "
+}
+
+function list
+#Description: List directories and modules
+{
+  test -z $1 && ls --color -d de*rs || ls --color -1 $1
+}
+
+function defaults
+#Description: Load module default variables
+{
+  export RT_DEMO=$DEMO
+  export RT_FREQ=$FREQ
+  export RT_RATE=$RATE
+  export RT_GAIN=$GAIN
+  export RT_REC=$REC
+}
+
+function back
+#Description: Go back to main interface
+{
+  PS1="\[$(tput setaf 145)\]radiotail>\[$(tput sgr0)\] "
+  source demodulators/.defaults
+  source descramblers/.defaults
+  unset TITLE
+  unset OPTIONS
+  unset option
+  unset FILE
+  export RT_DEMO=""
+  export RT_FREQ=""
+  export RT_RATE=""
+  export RT_GAIN=""
+  export RT_REC=""
+}
+alias beginning=back
+beginning
+
+#banner

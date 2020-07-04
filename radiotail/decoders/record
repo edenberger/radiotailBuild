@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+TITLE="Record To File"
+
+DEMO=fm
+FREQ=100000000
+RATE=171000
+GAIN=30
+REC=on
+DESCRAM=off
+
+OPTIONS="FREQ RATE GAIN"
+
+function run {
+  COMMAND="demodulators/${RT_DEMO} "
+  test -f ./descramblers/${RT_DESCRAM} && COMMAND="${COMMAND} | ./descramblers/${RT_DESCRAM} $PRESET "
+  COMMAND="${COMMAND} | cat > rec/$(echo $TITLE|cut -d" " -f1|tr 'A-Z' 'a-z')-$(date +%F-%H-%M-%S).${RT_DEMO}"
+  tput setaf 4 ; echo "Running command:"
+  echo $COMMAND ; tput sgr0
+  eval $COMMAND
+}

@@ -1,0 +1,30 @@
+#!/usr/bin/bash
+TITLE="AutoPWN module"
+
+DEMO=file
+FREQ=978000000
+RATE=2083334
+GAIN=48
+
+OPTIONS="FREQ RATE GAIN"
+
+TempVars=`mktemp`
+function run {
+  echo DEMO=\"${DEMO}\" > $TempVars
+  echo FILE=\"${FILE}\" >> $TempVars
+  echo FREQ=\"${FREQ}\" >> $TempVars
+  echo RATE=\"${RATE}\" >> $TempVars
+  echo GAIN=\"${GAIN}\" >> $TempVars
+  echo TITLE=\"${TITLE}\" >> $TempVars
+
+  for decoder in $(ls decoders|grep -v -e autopwn -e record); do
+    tput setaf 1
+    echo Trying ${decoder}:
+    tput sgr0
+    source decoders/${decoder}
+    source $TempVars
+    run
+  done
+  source decoders/autopwn
+  rm $TempVars
+}

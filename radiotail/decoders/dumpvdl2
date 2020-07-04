@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+TITLE="Dumpvdl2 - VDL Mode 2 message decoder and protocol analyzer"
+
+DEMO=sdr
+FREQ=136975000
+RATE=1050000
+GAIN=40
+REC=off
+DESCRAM=off
+
+OPTIONS="FREQ RATE GAIN REC"
+
+function run {
+  COMMAND="demodulators/${RT_DEMO} | "
+  test -f ./descramblers/${RT_DESCRAM} && COMMAND="${COMMAND} ./descramblers/${RT_DESCRAM} $PRESET | "
+  (test ! -z $RT_REC && test $RT_REC == "on") && COMMAND="${COMMAND} tee rec/$(echo $TITLE|cut -d" " -f1|tr 'A-Z' 'a-z')-$(date +%F-%H-%M-%S).${RT_DEMO} | "
+  COMMAND="${COMMAND} ./bin/dumpvdl2 --iq-file /dev/stdin || (tput setaf 1 ; echo Failed ; tput sgr0)"
+  tput setaf 4 ; echo "Running command:"
+  echo $COMMAND ; tput sgr0
+  eval $COMMAND
+}

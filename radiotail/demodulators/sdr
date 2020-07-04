@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+rtl_sdr -f $RT_FREQ -s $RT_RATE -g $RT_GAIN -

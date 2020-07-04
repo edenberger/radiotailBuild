@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+  # Title and descripsion to be printed when using the module
+TITLE=""
+  # Default variables
+DEMO=fm
+FREQ=978000000
+RATE=2083334
+GAIN=48
+  # Variables to be printed (DEMO is being printed anyway)
+OPTIONS="FREQ RATE GAIN"
+
+function run {
+    # Default descrambler is cat
+  DESCRAMBLER=cat
+    # If DESCRAM var is set and the file exist set DESCRAMBLER var to DESCRAM binary
+  (test -n $DESCRAM && test -f ./descramblers/$DESCRAM) && DESCRAMBLER="./descramblers/$DESCRAM $PRESET"
+    # Replace #COMMAND# with the command itself
+  demodulators/${DEMO} | $DESCRAMBLER | #COMMAND# || (tput setaf 1 ; echo Failed) ; tput sgr0
+}
+

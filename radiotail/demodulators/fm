@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+rtl_fm -M fm -l 0 -A std -p 0 -s $RT_RATE -g $RT_GAIN -F 9 -f $RT_FREQ

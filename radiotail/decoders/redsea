@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+TITLE="redsea - lightweight RDS to JSON decoder"
+
+DEMO=fm
+FREQ=100000000
+RATE=171000
+GAIN=30
+REC=off
+DESCRAM=off
+
+OPTIONS="FREQ RATE GAIN REC"
+
+function run {
+  COMMAND="demodulators/${RT_DEMO} | "
+  test -f ./descramblers/${RT_DESCRAM} && COMMAND="${COMMAND} ./descramblers/${RT_DESCRAM} $PRESET | "
+  (test ! -z $RT_REC && test $RT_REC == "on") && COMMAND="${COMMAND} tee rec/$(echo $TITLE|cut -d" " -f1|tr 'A-Z' 'a-z')-$(date +%F-%H-%M-%S).${RT_DEMO} | "
+  COMMAND="${COMMAND} ./bin/redsea || (tput setaf 1 ; echo Failed ; tput sgr0)"
+  tput setaf 4 ; echo "Running command:"
+  echo $COMMAND ; tput sgr0
+  eval $COMMAND
+}

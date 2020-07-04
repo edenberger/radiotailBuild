@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+TITLE="NRF24-BTLE-Decoder - sniff and decode NRF24L01+ and Bluetooth Low Energy"
+
+DEMO=fm
+FREQ=428500000
+RATE=2000000
+GAIN=0
+REC=off
+DESCRAM=off
+
+OPTIONS="FREQ RATE GAIN REC"
+
+function run {
+  COMMAND="demodulators/${RT_DEMO} | "
+  test -f ./descramblers/${RT_DESCRAM} && COMMAND="${COMMAND} ./descramblers/${RT_DESCRAM} $PRESET | "
+  (test ! -z $RT_REC && test $RT_REC == "on") && COMMAND="${COMMAND} tee rec/$(echo $TITLE|cut -d" " -f1|tr 'A-Z' 'a-z')-$(date +%F-%H-%M-%S).${RT_DEMO} | "
+  COMMAND="${COMMAND} ./bin/nrf24-btle-decoder -d 1 || (tput setaf 1 ; echo Failed ; tput sgr0)"
+  tput setaf 4 ; echo "Running command:"
+  echo $COMMAND ; tput sgr0
+  eval $COMMAND
+}
+
+#    -t nrf | btle - should we decode nrf or bluetooth LE packets (more on this later)
+#    -d 1 | 2 | 8 - select packet speed - the nrf can do 2mbps, 1mbps or 256kbps. you need to pick the right one.
+# https://webcache.googleusercontent.com/search?q=cache:VerAnuNPoKwJ:blog.cyberexplorer.me/2014/01/sniffing-and-decoding-nrf24l01-and.html+&cd=1&hl=en&ct=clnk&gl=il

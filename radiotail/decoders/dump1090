@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+TITLE="Dump1090 - simple Mode S decoder"
+
+DEMO=fm
+FREQ=228000
+RATE=200000
+GAIN=20
+REC=off
+DESCRAM=off
+
+OPTIONS="FREQ RATE GAIN REC"
+
+function run {
+  COMMAND="demodulators/${RT_DEMO} | "
+  test -f ./descramblers/${RT_DESCRAM} && COMMAND="${COMMAND} ./descramblers/${RT_DESCRAM} $PRESET | "
+  (test ! -z $RT_REC && test $RT_REC == "on") && COMMAND="${COMMAND} tee rec/$(echo $TITLE|cut -d" " -f1|tr 'A-Z' 'a-z')-$(date +%F-%H-%M-%S).${RT_DEMO} | "
+  COMMAND="${COMMAND} ./bin/dump1090 --ifile - || (tput setaf 1 ; echo Failed ; tput sgr0)"
+  tput setaf 4 ; echo "Running command:"
+  echo $COMMAND ; tput sgr0
+  eval $COMMAND
+}

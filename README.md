@@ -1,4 +1,4 @@
-# RADIOTAIL
+# Radiotail
 
 Metasploit-like framework for recording and decoding radio signals
 
@@ -11,6 +11,10 @@ The framework lets you combain between -
 The purpose is to automate and ease the identification stage of raw encoded data
 
 The autopwn module works only on recorded files for now, it `cat` the file to all supported decoders
+
+# Demo
+
+![GIF demo](radiotail/art/radiotail.gif)
 
 # Installation
 

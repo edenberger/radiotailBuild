@@ -12,23 +12,14 @@ The purpose is to automate and ease the identification stage of raw encoded data
 
 The autopwn module works only on recorded files for now, it `cat` the file to all supported decoders
 
+# Installation
 
-# Developers
+Install dependencies and run:
+```console
+./installDeps.sh
+./radiotail
+```
 
-The framework wrapper written in bash keeping KIS(S) in mind.
+# Demo
 
-When implementing a new function you can choose between letting help() parse it or not.  
-For help() to parse it syntax must be:  
-fucntion foo  
-Description: bar  
-{  
-  main_code  
-}  
-  
-To keep it hidden from help(), use something like:  
-foo () { # Description  
-  main_code  
-}  
-  
-* Main file is .source  
-  
+![GIF demo](art/radiotail.gif)

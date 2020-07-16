@@ -30,4 +30,4 @@ foo () { # Description
   main_code  
 }
 
-Main file is .source  
+* Main file is .source  

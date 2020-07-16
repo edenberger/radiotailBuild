@@ -71,7 +71,7 @@ The framework wrapper written in bash keeping KIS(S) in mind.
 
 Main file is .source.
 
-When implementing a new function you can choose between letting help() parse it or not.
+When implementing a new function you can choose between letting help() parse it or not.  
 For help() to parse it syntax must be:  
 fucntion foo  
 Description: bar  

@@ -21,13 +21,14 @@ When implementing a new function you can choose between letting help() parse it 
 For help() to parse it syntax must be:  
 fucntion foo  
 Description: bar  
-{
-  main_code
-}
-
+{  
+  main_code  
+}  
+  
 To keep it hidden from help(), use something like:  
 foo () { # Description  
   main_code  
-}
-
+}  
+  
 * Main file is .source  
+  
